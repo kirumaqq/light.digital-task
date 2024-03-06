@@ -1,0 +1,8 @@
+spring:
+  liquibase:
+    change-log: db/changelog/changelog-master.yaml
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/support-service
+    username: postgres
+    password: postgres
