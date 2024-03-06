@@ -11,7 +11,14 @@
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
-        <module name="MethodName"/>
+        <module name="MethodName">
+            <property name="id" value="MethodNameRegular"/>
+            <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+        </module>
+        <module name="MethodName">
+            <property name="id" value="MethodNameTest"/>
+            <property name="format" value="^[a-z][a-zA-Z0-9_]*$"/>
+        </module>
         <module name="PackageName"/>
         <module name="ParameterName"/>
         <module name="StaticVariableName"/>
@@ -89,5 +96,15 @@
             <property name="optional" value="true"/>
         </module>
 
+    </module>
+
+
+    <module name="SuppressionSingleFilter">
+        <property name="files" value=".*[\\/]src[\\/]test[\\/]"/>
+        <property name="id" value="MethodNameRegular"/>
+    </module>
+    <module name="SuppressionSingleFilter">
+        <property name="files" value=".*[\\/]src[\\/](?!test[\\/])"/>
+        <property name="id" value="MethodNameTest"/>
     </module>
 </module>
