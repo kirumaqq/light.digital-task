@@ -29,4 +29,8 @@ public class Application {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "status")
+    private ApplicationStatus status;
+
 }
