@@ -6,3 +6,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/support-service
     username: postgres
     password: postgres
+
+logging:
+  level:
+    io.umid.supportservice: debug
+    sql: trace
