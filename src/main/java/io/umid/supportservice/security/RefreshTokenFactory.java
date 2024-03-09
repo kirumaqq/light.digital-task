@@ -1,6 +1,6 @@
 package io.umid.supportservice.security;
 
-import lombok.RequiredArgsConstructor;
+import io.umid.supportservice.config.JwtProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +10,15 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.function.Function;
 
-@RequiredArgsConstructor
+
 @Component
 public class RefreshTokenFactory implements Function<UserDetails, RefreshToken> {
 
     private final Duration refreshTokenTtl;
+
+    public RefreshTokenFactory(JwtProperties jwtProperties) {
+        this.refreshTokenTtl = jwtProperties.getRefreshTokenTtl();
+    }
 
     @Override
     public RefreshToken apply(UserDetails userDetails) {
