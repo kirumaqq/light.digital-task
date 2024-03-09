@@ -38,19 +38,19 @@ public class RefreshTokenJweDeserializer implements Function<String, RefreshToke
                 );
             }
 
-            return null;
+
         } catch (ParseException e) {
             log.warn("Exception during verifying refresh token. Invalid token: {}", s);
-            throw new RuntimeException(e);
         } catch (JOSEException e) {
             log.warn("Exception during decrypting refresh token. Invalid token: {}", s);
-            throw new RuntimeException(e);
         }
+
+        return null;
     }
 
     private boolean hasNotExpired(JWTClaimsSet jwtClaimsSet) {
         Date expiry = jwtClaimsSet.getExpirationTime();
         log.debug("Expiration time of jwe access token: {}", expiry);
-        return expiry.before(Date.from(Instant.now()));
+        return expiry.after(Date.from(Instant.now()));
     }
 }
