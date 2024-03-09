@@ -11,6 +11,8 @@ logging:
   level:
     io.umid.supportservice: debug
     sql: trace
+    org.springframework:
+      security: trace
 
 jwt:
   access-token-key: "aaaa_aaaa_aaaa_aaaa_aaaa_aaaa_32"
