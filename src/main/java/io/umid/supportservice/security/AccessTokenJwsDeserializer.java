@@ -49,6 +49,6 @@ public class AccessTokenJwsDeserializer implements Function<String, AccessToken>
     private boolean hasNotExpired(JWTClaimsSet jwtClaimsSet) {
         Date expiry = jwtClaimsSet.getExpirationTime();
         log.debug("Expiration time of jws access token: {}", expiry);
-        return expiry.before(Date.from(Instant.now()));
+        return expiry.after(Date.from(Instant.now()));
     }
 }
