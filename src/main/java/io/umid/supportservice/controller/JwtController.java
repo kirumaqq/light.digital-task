@@ -2,8 +2,6 @@ package io.umid.supportservice.controller;
 
 import io.umid.supportservice.dto.JwtResponse;
 import io.umid.supportservice.service.JwtService;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/jwt")
