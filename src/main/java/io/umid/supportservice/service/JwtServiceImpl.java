@@ -47,13 +47,18 @@ public class JwtServiceImpl implements JwtService {
         log.debug("Refreshing JWT token");
 
         RefreshToken oldToken = refreshTokenDeserializer.apply(refreshTokenStr);
-        AccessToken accessToken = accessTokenFactory.apply(oldToken);
-        RefreshToken refreshToken = updateRefreshToken(oldToken);
 
-        return new JwtResponse(
-                accessTokenSerializer.apply(accessToken),
-                refreshTokenSerializer.apply(refreshToken)
-        );
+        if (oldToken != null) {
+            AccessToken accessToken = accessTokenFactory.apply(oldToken);
+            RefreshToken refreshToken = updateRefreshToken(oldToken);
+
+            return new JwtResponse(
+                    accessTokenSerializer.apply(accessToken),
+                    refreshTokenSerializer.apply(refreshToken)
+            );
+        }
+
+        return null;
     }
 
     private RefreshToken updateRefreshToken(RefreshToken oldToken) {
