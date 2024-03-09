@@ -25,7 +25,7 @@ public class JwtController {
         return jwtService.receiveTokens(userDetails);
     }
 
-    @GetMapping
+    @GetMapping("/refresh")
     public JwtResponse refresh(@RequestHeader(name = HttpHeaders.AUTHORIZATION) String auth) {
 
 
