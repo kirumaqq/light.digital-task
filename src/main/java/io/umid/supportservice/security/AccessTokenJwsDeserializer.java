@@ -23,32 +23,27 @@ public class AccessTokenJwsDeserializer implements Function<String, AccessToken>
     private final JWSVerifier jwsVerifier;
 
     @Override
-    public AccessToken apply(String s) {
+    public AccessToken apply(String tokenRaw) {
 
         log.debug("Deserializing into access token following JWS");
 
         try {
-            SignedJWT signedJWT = SignedJWT.parse(s);
+            SignedJWT signedJWT = SignedJWT.parse(tokenRaw);
             JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
 
             if (hasNotExpired(jwtClaimsSet) && signedJWT.verify(jwsVerifier)) {
-
                 return new AccessToken(
                         UUID.fromString(jwtClaimsSet.getJWTID()),
                         jwtClaimsSet.getSubject(),
                         jwtClaimsSet.getExpirationTime()
                 );
             }
-
-            return null;
         } catch (ParseException e) {
-            log.warn("Exception during parsin access token. Invalid token: {}", s);
-            throw new RuntimeException(e);
+            log.warn("Exception during parsin access token. Invalid token: {}", tokenRaw);
         } catch (JOSEException e) {
-            log.warn("Exception during verifying access token. Invalid token: {}", s);
-            throw new RuntimeException(e);
+            log.warn("Exception during verifying access token. Invalid token: {}", tokenRaw);
         }
-
+        return null;
     }
 
     private boolean hasNotExpired(JWTClaimsSet jwtClaimsSet) {
