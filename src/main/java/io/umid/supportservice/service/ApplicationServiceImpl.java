@@ -59,4 +59,11 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .map(applicationMapper::mapToResponse)
                 .toList();
     }
+
+    @Override
+    public ApplicationResponse editApplicationStatus(Integer appId, ApplicationStatus status) {
+        var application = applicationRepository.updateStatusById(appId, status);
+
+        return applicationMapper.mapToResponse(application);
+    }
 }

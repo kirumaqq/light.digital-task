@@ -3,6 +3,7 @@ package io.umid.supportservice.controller;
 
 import io.umid.supportservice.dto.ApplicationResponse;
 import io.umid.supportservice.dto.PageRequestDto;
+import io.umid.supportservice.model.ApplicationStatus;
 import io.umid.supportservice.model.User;
 import io.umid.supportservice.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,6 +46,13 @@ public class ApplicationsController {
         Pageable pageable = PageRequest
                 .of(pageReq.getPage(), pageReq.getSize(), pageReq.getDirection(), pageReq.getSortBy());
         return applicationService.getAllApplications(pageable, name, user);
+    }
+
+    @PatchMapping("/application/{id}")
+    public ApplicationResponse editStatus(Integer id, ApplicationStatus status) {
+        log.info("Changing status of an application with id {} to {}", id, status);
+
+        return applicationService.editApplicationStatus(id, status);
     }
 
 
