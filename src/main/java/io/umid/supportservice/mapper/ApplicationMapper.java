@@ -1,5 +1,6 @@
 package io.umid.supportservice.mapper;
 
+import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
 import io.umid.supportservice.model.Application;
 import org.mapstruct.Mapper;
@@ -10,5 +11,6 @@ public interface ApplicationMapper {
 
     ApplicationResponse mapToResponse(Application application);
 
+    Application toApplication(ApplicationRequest applicationRequest);
 
 }

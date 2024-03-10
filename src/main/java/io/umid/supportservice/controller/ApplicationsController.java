@@ -1,6 +1,7 @@
 package io.umid.supportservice.controller;
 
 
+import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
 import io.umid.supportservice.dto.PageRequestDto;
 import io.umid.supportservice.model.ApplicationStatus;
@@ -11,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -60,6 +58,21 @@ public class ApplicationsController {
         log.info("Searching for an application by its id: {}", id);
 
         return applicationService.getApplicationById(id);
+    }
+
+    @PostMapping("/applications")
+    public ApplicationResponse create(ApplicationRequest applicationRequest,
+                                      @AuthenticationPrincipal User user) {
+        log.info("User {} is creating new application: {}", user.getUsername(), applicationRequest);
+
+        return applicationService.createApplication(applicationRequest, user);
+    }
+
+    @PutMapping("/applications")
+    public ApplicationResponse edit(ApplicationRequest applicationRequest,
+                                    @AuthenticationPrincipal User user) {
+        log.info("User {} is editing application: {}", user.getUsername(), applicationRequest);
+
     }
 
 }

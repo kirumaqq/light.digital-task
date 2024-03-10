@@ -1,9 +1,11 @@
 package io.umid.supportservice.service;
 
+import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
 import io.umid.supportservice.mapper.ApplicationMapper;
 import io.umid.supportservice.model.ApplicationStatus;
 import io.umid.supportservice.model.Roles;
+import io.umid.supportservice.model.User;
 import io.umid.supportservice.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +72,16 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public ApplicationResponse getApplicationById(Integer id) {
         var application = applicationRepository.findById(id);
+
+        return applicationMapper.mapToResponse(application);
+    }
+
+    @Override
+    public ApplicationResponse createApplication(ApplicationRequest applicationRequest, User user) {
+        var application = applicationMapper.toApplication(applicationRequest);
+        application.setUser(user);
+
+        applicationRepository.save(application);
 
         return applicationMapper.mapToResponse(application);
     }
