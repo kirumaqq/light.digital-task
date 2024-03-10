@@ -54,7 +54,7 @@ public class ApplicationsController {
     }
 
     @GetMapping("/application/{id}")
-    public ApplicationResponse getById(Integer id) {
+    public ApplicationResponse getById(@PathVariable Integer id) {
         log.info("Searching for an application by its id: {}", id);
 
         return applicationService.getApplicationById(id);
