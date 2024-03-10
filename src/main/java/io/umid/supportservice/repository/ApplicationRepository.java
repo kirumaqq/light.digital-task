@@ -29,6 +29,4 @@ public interface ApplicationRepository extends Repository<Application, Integer> 
 
     Application save(Application application);
 
-    Application update(Application application);
-
 }

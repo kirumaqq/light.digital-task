@@ -99,7 +99,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         var application = applicationMapper.toApplication(applicationRequest);
         application.setUser(user);
 
-        var updated = applicationRepository.update(application);
+        var updated = applicationRepository.save(application);
 
         return applicationMapper.mapToResponse(updated);
     }
