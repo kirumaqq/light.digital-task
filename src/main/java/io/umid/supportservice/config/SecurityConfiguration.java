@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static io.umid.supportservice.model.Roles.*;
+import static org.springframework.http.HttpMethod.*;
+
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration {
@@ -24,6 +27,13 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/jwt/token").authenticated()
                         .requestMatchers("/jwt/refresh").permitAll()
+                        .requestMatchers(POST, "/applications").hasRole(USER.name())
+                        .requestMatchers(PUT,  "/applications").hasRole(USER.name())
+                        .requestMatchers(GET,  "/user/applications").hasRole(USER.name())
+                        .requestMatchers(GET,  "/application/").hasRole(OPERATOR.name())
+                        .requestMatchers(PATCH,"/application/").hasRole(OPERATOR.name())
+                        .requestMatchers(GET,  "/applications")
+                            .hasAnyRole(OPERATOR.name(), ADMIN.name())
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
