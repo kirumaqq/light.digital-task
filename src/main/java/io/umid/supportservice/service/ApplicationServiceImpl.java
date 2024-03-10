@@ -2,6 +2,7 @@ package io.umid.supportservice.service;
 
 import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
+import io.umid.supportservice.exception.NotAllowedException;
 import io.umid.supportservice.mapper.ApplicationMapper;
 import io.umid.supportservice.model.ApplicationStatus;
 import io.umid.supportservice.model.Roles;
@@ -10,6 +11,7 @@ import io.umid.supportservice.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -81,8 +83,24 @@ public class ApplicationServiceImpl implements ApplicationService {
         var application = applicationMapper.toApplication(applicationRequest);
         application.setUser(user);
 
-        applicationRepository.save(application);
+        var saved = applicationRepository.save(application);
 
-        return applicationMapper.mapToResponse(application);
+        return applicationMapper.mapToResponse(saved);
+    }
+
+    @Override
+    public ApplicationResponse editApplication(ApplicationRequest applicationRequest, User user) {
+
+        if (applicationRequest.status() != ApplicationStatus.DRAFT) {
+            log.warn("User {} tried to edit non draft application {}", user.getUsername(), applicationRequest);
+            throw new NotAllowedException("Users cannot edit non-draft application");
+        }
+
+        var application = applicationMapper.toApplication(applicationRequest);
+        application.setUser(user);
+
+        var updated = applicationRepository.update(application);
+
+        return applicationMapper.mapToResponse(updated);
     }
 }

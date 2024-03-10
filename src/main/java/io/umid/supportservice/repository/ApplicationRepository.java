@@ -27,6 +27,8 @@ public interface ApplicationRepository extends Repository<Application, Integer> 
 
     Application findById(Integer id);
 
-    void save(Application application);
+    Application save(Application application);
+
+    Application update(Application application);
 
 }

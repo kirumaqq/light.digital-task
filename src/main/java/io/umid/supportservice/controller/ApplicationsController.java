@@ -47,7 +47,7 @@ public class ApplicationsController {
     }
 
     @PatchMapping("/application/{id}")
-    public ApplicationResponse editStatus(Integer id, ApplicationStatus status) {
+    public ApplicationResponse editStatus(@PathVariable Integer id, ApplicationStatus status) {
         log.info("Changing status of an application with id {} to {}", id, status);
 
         return applicationService.editApplicationStatus(id, status);
@@ -73,6 +73,7 @@ public class ApplicationsController {
                                     @AuthenticationPrincipal User user) {
         log.info("User {} is editing application: {}", user.getUsername(), applicationRequest);
 
+        return applicationService.editApplication(applicationRequest, user);
     }
 
 }

@@ -21,4 +21,6 @@ public interface ApplicationService {
 
     ApplicationResponse createApplication(ApplicationRequest applicationRequest, User user);
 
+    ApplicationResponse editApplication(ApplicationRequest applicationRequest, User user);
+
 }
