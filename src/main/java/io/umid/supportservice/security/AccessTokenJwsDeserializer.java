@@ -1,7 +1,6 @@
 package io.umid.supportservice.security;
 
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
