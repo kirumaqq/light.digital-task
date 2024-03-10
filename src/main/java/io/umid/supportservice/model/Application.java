@@ -39,7 +39,7 @@ public class Application {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @JoinColumn(name = "status")
+    @JoinColumn(name = "status", nullable = false)
     private ApplicationStatus status;
 
 }
