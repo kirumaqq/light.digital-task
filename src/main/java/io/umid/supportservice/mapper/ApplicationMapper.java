@@ -12,6 +12,7 @@ public interface ApplicationMapper {
 
     ApplicationResponse mapToResponse(Application application);
 
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "id", ignore = true)
     Application toApplication(ApplicationRequest applicationRequest);
