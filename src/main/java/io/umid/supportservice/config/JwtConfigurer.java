@@ -25,8 +25,10 @@ public class JwtConfigurer extends AbstractHttpConfigurer<JwtConfigurer, HttpSec
         var authManager = builder.getSharedObject(AuthenticationManager.class);
         var jwtAuthFilter = new AuthenticationFilter(authManager, authenticationConverter);
 
-        jwtAuthFilter.setSuccessHandler((request, response, authentication) -> {});
-        jwtAuthFilter.setFailureHandler((request, response, exception) -> {});
+        jwtAuthFilter.setSuccessHandler((request, response, authentication) -> {
+        });
+        jwtAuthFilter.setFailureHandler((request, response, exception) -> {
+        });
 
         var authProvider = new PreAuthenticatedAuthenticationProvider();
         authProvider.setPreAuthenticatedUserDetailsService(userDetailsService);
