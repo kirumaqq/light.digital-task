@@ -55,5 +55,11 @@ public class ApplicationsController {
         return applicationService.editApplicationStatus(id, status);
     }
 
+    @GetMapping("/application/{id}")
+    public ApplicationResponse getById(Integer id) {
+        log.info("Searching for an application by its id: {}", id);
+
+        return applicationService.getApplicationById(id);
+    }
 
 }

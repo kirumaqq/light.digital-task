@@ -25,4 +25,7 @@ public interface ApplicationRepository extends Repository<Application, Integer> 
             """)
     Application updateStatusById(Integer id, ApplicationStatus status);
 
+
+    Application findById(Integer id);
+
 }

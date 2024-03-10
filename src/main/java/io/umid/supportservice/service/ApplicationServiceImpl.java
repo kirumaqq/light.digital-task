@@ -66,4 +66,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationMapper.mapToResponse(application);
     }
+
+    @Override
+    public ApplicationResponse getApplicationById(Integer id) {
+        var application = applicationRepository.findById(id);
+
+        return applicationMapper.mapToResponse(application);
+    }
 }

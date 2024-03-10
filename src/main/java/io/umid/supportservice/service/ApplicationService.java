@@ -15,4 +15,6 @@ public interface ApplicationService {
 
     ApplicationResponse editApplicationStatus(Integer appId, ApplicationStatus status);
 
+    ApplicationResponse getApplicationById(Integer id);
+
 }
