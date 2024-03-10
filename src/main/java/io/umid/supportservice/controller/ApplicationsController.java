@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,6 +34,17 @@ public class ApplicationsController {
         return applicationService.getUserApplications(pageable, user.getId());
     }
 
+
+    @GetMapping("/applications")
+    public List<ApplicationResponse> getAllApplications(PageRequestDto pageReq,
+                                                        @RequestParam(defaultValue = "") String name,
+                                                        @AuthenticationPrincipal User user) {
+        log.info("User, {}, requested all applications filtered by name: {}", user.getUsername(), name);
+
+        Pageable pageable = PageRequest
+                .of(pageReq.getPage(), pageReq.getSize(), pageReq.getDirection(), pageReq.getSortBy());
+        return applicationService.getAllApplications(pageable, name, user);
+    }
 
 
 }
