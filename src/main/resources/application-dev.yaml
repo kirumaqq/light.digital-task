@@ -7,6 +7,13 @@ spring:
     username: postgres
     password: postgres
 
+  cloud:
+    openfeign:
+      client:
+        config:
+          phone-check:
+            url: https://cleaner.dadata.ru/api/v1
+
 logging:
   level:
     io.umid.supportservice: debug

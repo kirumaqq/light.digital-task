@@ -28,6 +28,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationMapper applicationMapper;
 
+    private final PhoneCheckingService phoneCheckingService;
+
     @Override
     public List<ApplicationResponse> getUserApplications(Pageable pageable, Integer userId) {
         log.debug("Searching applications of user with id: {}", userId);
@@ -92,6 +94,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationResponse createApplication(ApplicationRequest applicationRequest, User user) {
+        phoneCheckingService.checkPhoneNumber(applicationRequest.phoneNumber());
+
         var application = applicationMapper.toApplication(applicationRequest);
         application.setUser(user);
 
@@ -106,6 +110,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if (applicationRequest.status() != ApplicationStatus.DRAFT) {
             throw new NotAllowedException("Users cannot edit non-draft applications");
         }
+
+        phoneCheckingService.checkPhoneNumber(applicationRequest.phoneNumber());
 
         var application = applicationMapper.toApplication(applicationRequest);
         application.setUser(user);
