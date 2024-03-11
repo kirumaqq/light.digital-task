@@ -11,7 +11,6 @@ import io.umid.supportservice.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         log.debug("User is allowed to see applications with status: {}", allowedStatuses);
 
-        return applicationRepository.findAllByNameContainingAndStatusIn(name, allowedStatuses, pageable)
+        return applicationRepository.findAllHavingStatusAndUsername(name, allowedStatuses, pageable)
                 .map(applicationMapper::mapToResponse)
                 .toList();
     }

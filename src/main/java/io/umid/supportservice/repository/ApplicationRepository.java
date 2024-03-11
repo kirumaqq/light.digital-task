@@ -15,7 +15,14 @@ public interface ApplicationRepository extends Repository<Application, Integer> 
 
     Page<Application> findAllByUserId(Pageable pageable, Integer userId);
 
-    Page<Application> findAllByNameContainingAndStatusIn(String name, Collection<ApplicationStatus> status, Pageable pageable);
+    @Query("""
+            from Application a
+            join User u
+            on u = a.user
+            where u.username like %:username% and
+            a.status in :statuses
+            """)
+    Page<Application> findAllHavingStatusAndUsername(String username, Collection<ApplicationStatus> statuses, Pageable pageable);
 
     @Modifying
     @Query("""
