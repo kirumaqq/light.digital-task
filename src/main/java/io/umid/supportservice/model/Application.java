@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "applications", schema = "public")
 public class Application {
@@ -46,6 +45,10 @@ public class Application {
         this.phoneNumber = phoneNumber;
         this.user = user;
         this.status = status;
+        this.createdAt = Date.valueOf(LocalDate.now());
+    }
+
+    public Application() {
         this.createdAt = Date.valueOf(LocalDate.now());
     }
 }
