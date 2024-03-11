@@ -71,11 +71,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         var application = applicationRepository.findById(appId);
 
-        log.debug("Application: {}", application);
+        log.debug("Application status: {}", application.getStatus());
 
         if (application.getStatus() != ApplicationStatus.SENT) {
-            log.warn("Operator tried to edit application with non-sent status");
-            throw new NotAllowedException();
+            throw new NotAllowedException("Operator cannot edit applications with non-SENT status");
         }
 
         log.debug("Updating application status");
@@ -105,8 +104,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public ApplicationResponse editApplication(ApplicationRequest applicationRequest, User user) {
 
         if (applicationRequest.status() != ApplicationStatus.DRAFT) {
-            log.warn("User {} tried to edit non draft application {}", user.getUsername(), applicationRequest);
-            throw new NotAllowedException("Users cannot edit non-draft application");
+            throw new NotAllowedException("Users cannot edit non-draft applications");
         }
 
         var application = applicationMapper.toApplication(applicationRequest);
