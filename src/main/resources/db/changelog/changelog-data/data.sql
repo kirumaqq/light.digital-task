@@ -11,13 +11,14 @@ VALUES ('USER'), ('ADMIN'), ('OPERATOR');
 INSERT INTO users (username, password_hash)
 VALUES
     ('user1', 'pass'), ('user2', 'pass'), ('user3', 'pass'), ('user4', 'pass'),
-    ('admin1', 'pass'), ('admin2', 'pass'), ('operator1', 'pass'), ('operator2', 'pass');
+    ('admin1', 'pass'), ('admin2', 'pass'), ('operator1', 'pass'), ('operator2', 'pass'),
+    ('su', 'pass');
 
 
 
 --changeset umid:3
 INSERT INTO users_roles (user_id, role_id)
-VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 2), (6, 2), (7, 3), (8, 3);
+VALUES (1, 1), (2, 1), (3, 1), (4, 1), (5, 2), (6, 2), (7, 3), (8, 3), (9, 1), (9, 2), (9, 3);
 
 
 --changeset umid:4
