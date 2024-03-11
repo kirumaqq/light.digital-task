@@ -9,8 +9,6 @@ import io.umid.supportservice.model.User;
 import io.umid.supportservice.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,10 +32,7 @@ public class ApplicationsController {
     public List<ApplicationResponse> getUserApplications(PageRequestDto pageReq,
                                                          @AuthenticationPrincipal User user) {
         log.info("User, {}, requested applications. Page request: {}", user.getUsername(), pageReq);
-
-        Pageable pageable = PageRequest
-                .of(pageReq.getPage(), pageReq.getSize(), pageReq.getDirection(), pageReq.getSortBy());
-        return applicationService.getUserApplications(pageable, user.getId());
+        return applicationService.getUserApplications(pageReq, user.getId());
     }
 
 
@@ -46,10 +41,7 @@ public class ApplicationsController {
                                                         @RequestParam(defaultValue = "") String name,
                                                         @AuthenticationPrincipal User user) {
         log.info("User, {}, requested all applications filtered by name: {}", user.getUsername(), name);
-
-        Pageable pageable = PageRequest
-                .of(pageReq.getPage(), pageReq.getSize(), pageReq.getDirection(), pageReq.getSortBy());
-        return applicationService.getAllApplications(pageable, name, user);
+        return applicationService.getAllApplications(pageReq, name, user);
     }
 
     @PatchMapping("/application/{id}")

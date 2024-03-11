@@ -2,6 +2,7 @@ package io.umid.supportservice.service;
 
 import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
+import io.umid.supportservice.dto.PageRequestDto;
 import io.umid.supportservice.exception.NotAllowedException;
 import io.umid.supportservice.mapper.ApplicationMapper;
 import io.umid.supportservice.model.ApplicationStatus;
@@ -11,6 +12,7 @@ import io.umid.supportservice.repository.ApplicationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +33,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final PhoneCheckingService phoneCheckingService;
 
     @Override
-    public List<ApplicationResponse> getUserApplications(Pageable pageable, Integer userId) {
+    public List<ApplicationResponse> getUserApplications(PageRequestDto pageReq, Integer userId) {
         log.debug("Searching applications of user with id: {}", userId);
+
+        PageRequest pageable = PageRequest.of(pageReq.getPage(), pageReq.getSize(),
+                pageReq.getDirection(), pageReq.getSortBy());
 
         return applicationRepository.findAllByUserId(pageable, userId)
                 .map(applicationMapper::mapToResponse)
@@ -40,8 +45,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public List<ApplicationResponse> getAllApplications(Pageable pageable, String name, UserDetails userDetails) {
+    public List<ApplicationResponse> getAllApplications(PageRequestDto pageReq,
+                                                        String name, UserDetails userDetails) {
         log.debug("Searching applications filtered by name: {}", name);
+        Pageable pageable = PageRequest.of(pageReq.getPage(), pageReq.getSize(),
+                pageReq.getDirection(), pageReq.getSortBy());
 
         var authorities = userDetails.getAuthorities()
                 .stream()

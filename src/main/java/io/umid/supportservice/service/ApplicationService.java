@@ -2,18 +2,18 @@ package io.umid.supportservice.service;
 
 import io.umid.supportservice.dto.ApplicationRequest;
 import io.umid.supportservice.dto.ApplicationResponse;
+import io.umid.supportservice.dto.PageRequestDto;
 import io.umid.supportservice.model.ApplicationStatus;
 import io.umid.supportservice.model.User;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface ApplicationService {
 
-    List<ApplicationResponse> getUserApplications(Pageable pageable, Integer userId);
+    List<ApplicationResponse> getUserApplications(PageRequestDto pageRequestDto, Integer userId);
 
-    List<ApplicationResponse> getAllApplications(Pageable pageable, String name, UserDetails userDetails);
+    List<ApplicationResponse> getAllApplications(PageRequestDto pageRequestDto, String name, UserDetails userDetails);
 
     ApplicationResponse editApplicationStatus(Integer appId, ApplicationStatus status);
 
