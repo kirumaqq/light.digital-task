@@ -7,7 +7,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static io.umid.supportservice.model.Roles.ADMIN;
+import static io.umid.supportservice.model.Roles.OPERATOR;
+import static io.umid.supportservice.model.Roles.USER;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PATCH;
+import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @RequiredArgsConstructor
 @Configuration
@@ -24,11 +33,33 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/jwt/token").authenticated()
                         .requestMatchers("/jwt/refresh").permitAll()
+                        .requestMatchers(POST, "/applications").hasRole(USER.name())
+                        .requestMatchers(PUT, "/application/*").hasRole(USER.name())
+                        .requestMatchers(GET, "/user/applications").hasRole(USER.name())
+                        .requestMatchers(GET, "/application/*").hasRole(OPERATOR.name())
+                        .requestMatchers(PATCH, "/application/*").hasRole(OPERATOR.name())
+                        .requestMatchers(GET, "/applications")
+                        .hasAnyRole(OPERATOR.name(), ADMIN.name())
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return rawPassword.toString();
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return rawPassword.equals(encodedPassword);
+            }
+        };
     }
 
 
