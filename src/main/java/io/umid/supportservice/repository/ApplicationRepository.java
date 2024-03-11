@@ -28,9 +28,9 @@ public interface ApplicationRepository extends Repository<Application, Integer> 
     @Query("""
             update Application a
             set a.status = :status
-            where a.id = :id2
+            where a.id = :id
             """)
-    Application updateStatusById(Integer id, ApplicationStatus status);
+    void updateStatusById(Integer id, ApplicationStatus status);
 
     Application findById(Integer id);
 

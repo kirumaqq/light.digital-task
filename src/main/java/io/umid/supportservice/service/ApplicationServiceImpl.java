@@ -8,6 +8,7 @@ import io.umid.supportservice.model.ApplicationStatus;
 import io.umid.supportservice.model.Roles;
 import io.umid.supportservice.model.User;
 import io.umid.supportservice.repository.ApplicationRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -63,9 +64,22 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public ApplicationResponse editApplicationStatus(Integer appId, ApplicationStatus status) {
-        var application = applicationRepository.updateStatusById(appId, status);
+        log.debug("First, searching an application by id: {}", appId);
+
+        var application = applicationRepository.findById(appId);
+
+        log.debug("Application: {}", application);
+
+        if (application.getStatus() != ApplicationStatus.SENT) {
+            log.warn("Operator tried to edit application with non-sent status");
+            throw new NotAllowedException();
+        }
+
+        log.debug("Updating application status");
+        applicationRepository.updateStatusById(appId, status);
 
         return applicationMapper.mapToResponse(application);
     }
