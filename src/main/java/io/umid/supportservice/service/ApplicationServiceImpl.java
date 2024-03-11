@@ -49,10 +49,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         var allowedStatuses = new ArrayList<ApplicationStatus>();
 
-        if (authorities.contains(Roles.OPERATOR.name())) {
+        if (authorities.contains(Roles.OPERATOR.withRolePrefix())) {
             allowedStatuses.add(ApplicationStatus.SENT);
         }
-        if (authorities.contains(Roles.ADMIN.name())) {
+        if (authorities.contains(Roles.ADMIN.withRolePrefix())) {
             allowedStatuses.add(ApplicationStatus.DECLINED);
             allowedStatuses.add(ApplicationStatus.ACCEPTED);
         }
