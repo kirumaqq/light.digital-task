@@ -101,7 +101,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ApplicationResponse editApplication(ApplicationRequest applicationRequest, User user) {
+    public ApplicationResponse editApplication(ApplicationRequest applicationRequest, Integer appId, User user) {
 
         if (applicationRequest.status() != ApplicationStatus.DRAFT) {
             throw new NotAllowedException("Users cannot edit non-draft applications");
@@ -109,6 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         var application = applicationMapper.toApplication(applicationRequest);
         application.setUser(user);
+        application.setId(appId);
 
         var updated = applicationRepository.save(application);
 

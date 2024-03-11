@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/jwt/token").authenticated()
                         .requestMatchers("/jwt/refresh").permitAll()
                         .requestMatchers(POST, "/applications").hasRole(USER.name())
-                        .requestMatchers(PUT,  "/applications").hasRole(USER.name())
+                        .requestMatchers(PUT,  "/application/*").hasRole(USER.name())
                         .requestMatchers(GET,  "/user/applications").hasRole(USER.name())
                         .requestMatchers(GET,  "/application/*").hasRole(OPERATOR.name())
                         .requestMatchers(PATCH,"/application/*").hasRole(OPERATOR.name())

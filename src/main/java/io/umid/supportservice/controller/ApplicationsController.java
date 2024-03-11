@@ -68,12 +68,13 @@ public class ApplicationsController {
         return applicationService.createApplication(applicationRequest, user);
     }
 
-    @PutMapping("/applications")
+    @PutMapping("/application/{id}")
     public ApplicationResponse edit(ApplicationRequest applicationRequest,
+                                    @PathVariable Integer id,
                                     @AuthenticationPrincipal User user) {
         log.info("User {} is editing application: {}", user.getUsername(), applicationRequest);
 
-        return applicationService.editApplication(applicationRequest, user);
+        return applicationService.editApplication(applicationRequest, id, user);
     }
 
 }
