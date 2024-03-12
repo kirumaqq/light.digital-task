@@ -2,7 +2,7 @@ package io.umid.supportservice.service;
 
 import io.umid.supportservice.dto.JwtResponse;
 
-public interface JwtService {
+public interface AuthService {
 
     JwtResponse login(String username, String password);
 

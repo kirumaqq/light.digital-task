@@ -1,7 +1,7 @@
 package io.umid.supportservice.controller;
 
 import io.umid.supportservice.dto.JwtResponse;
-import io.umid.supportservice.service.JwtService;
+import io.umid.supportservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class JwtController {
+public class AuthController {
 
-    private final JwtService jwtService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public JwtResponse login(String username, String password) {
-        return jwtService.login(username, password);
+        return authService.login(username, password);
     }
 
     @GetMapping("/refresh")
@@ -25,6 +25,6 @@ public class JwtController {
 
         var token = auth.substring(7);
 
-        return jwtService.refreshToken(token);
+        return authService.refreshToken(token);
     }
 }

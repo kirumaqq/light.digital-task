@@ -18,7 +18,7 @@ import java.util.function.Function;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class JwtServiceImpl implements JwtService {
+public class AuthServiceImpl implements AuthService {
 
     private final RefreshTokenFactory refreshTokenFactory;
 
