@@ -10,4 +10,7 @@ public interface UserRepository extends Repository<User, Integer> {
 
     Optional<User> findByUsername(String username);
 
+    Optional<User> findById(Integer id);
+
+
 }
