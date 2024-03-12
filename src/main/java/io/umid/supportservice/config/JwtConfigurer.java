@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationFilter;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -18,25 +17,20 @@ public class JwtConfigurer extends AbstractHttpConfigurer<JwtConfigurer, HttpSec
 
     private final AuthenticationConverter authenticationConverter;
 
-    private final AuthenticationUserDetailsService<PreAuthenticatedAuthenticationToken> userDetailsService;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public void configure(HttpSecurity builder) {
-        var authManager = builder.getSharedObject(AuthenticationManager.class);
-        var jwtAuthFilter = new AuthenticationFilter(authManager, authenticationConverter);
+
+        var jwtAuthFilter = new AuthenticationFilter(authenticationManager, authenticationConverter);
 
         jwtAuthFilter.setSuccessHandler((request, response, authentication) -> {
         });
-        jwtAuthFilter.setFailureHandler((request, response, exception) -> {
-        });
 
-        var authProvider = new PreAuthenticatedAuthenticationProvider();
-        authProvider.setPreAuthenticatedUserDetailsService(userDetailsService);
+        jwtAuthFilter.setFailureHandler(
+                new AuthenticationEntryPointFailureHandler(new Http403ForbiddenEntryPoint()));
 
-
-        builder
-                .addFilterAfter(jwtAuthFilter, BasicAuthenticationFilter.class)
-                .authenticationProvider(authProvider);
+        builder.addFilterAfter(jwtAuthFilter, BasicAuthenticationFilter.class);
     }
 
 

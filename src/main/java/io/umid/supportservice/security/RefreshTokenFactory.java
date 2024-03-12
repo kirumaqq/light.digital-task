@@ -8,11 +8,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
-import java.util.function.Function;
 
 
 @Component
-public class RefreshTokenFactory implements Function<UserDetails, RefreshToken> {
+public class RefreshTokenFactory {
 
     private final Duration refreshTokenTtl;
 
@@ -20,8 +19,7 @@ public class RefreshTokenFactory implements Function<UserDetails, RefreshToken> 
         this.refreshTokenTtl = jwtProperties.getRefreshTokenTtl();
     }
 
-    @Override
-    public RefreshToken apply(UserDetails userDetails) {
+    public RefreshToken createByUserDetails(UserDetails userDetails) {
 
         Instant now = Instant.now();
         Instant expiry = now.plus(refreshTokenTtl);
@@ -29,6 +27,18 @@ public class RefreshTokenFactory implements Function<UserDetails, RefreshToken> 
         return new RefreshToken(
                 UUID.randomUUID(),
                 userDetails.getUsername(),
+                Date.from(now),
+                Date.from(expiry));
+    }
+
+    public RefreshToken recreate(RefreshToken refreshToken) {
+
+        Instant now = Instant.now();
+        Instant expiry = now.plus(refreshTokenTtl);
+
+        return new RefreshToken(
+                UUID.randomUUID(),
+                refreshToken.subject(),
                 Date.from(now),
                 Date.from(expiry));
     }
