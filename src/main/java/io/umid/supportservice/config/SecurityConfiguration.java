@@ -10,13 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static io.umid.supportservice.model.Roles.ADMIN;
-import static io.umid.supportservice.model.Roles.OPERATOR;
-import static io.umid.supportservice.model.Roles.USER;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.PATCH;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
+import static io.umid.supportservice.model.Roles.*;
+import static org.springframework.http.HttpMethod.*;
 
 @RequiredArgsConstructor
 @Configuration
@@ -40,6 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers(PATCH, "/application/*").hasRole(OPERATOR.name())
                         .requestMatchers(GET, "/applications")
                         .hasAnyRole(OPERATOR.name(), ADMIN.name())
+                        .requestMatchers(PATCH, "/user/*").hasRole(ADMIN.name())
                         .anyRequest().permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManagement -> sessionManagement
