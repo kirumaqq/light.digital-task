@@ -2,8 +2,10 @@ package io.umid.supportservice.service;
 
 import io.umid.supportservice.dto.EditUserDto;
 import io.umid.supportservice.dto.GetUserDto;
+import io.umid.supportservice.exception.NotAllowedException;
 import io.umid.supportservice.exception.ResourceNotFoundException;
 import io.umid.supportservice.mapper.UserMapper;
+import io.umid.supportservice.model.Roles;
 import io.umid.supportservice.repository.RoleRepository;
 import io.umid.supportservice.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public GetUserDto addRoleToUser(EditUserDto editUserDto) {
+
+        if (editUserDto.role() != Roles.OPERATOR) {
+            throw new NotAllowedException("Only operator role can be added");
+        }
 
         log.debug("Searching user by its id: {}", editUserDto.id());
 
