@@ -30,4 +30,16 @@ public class RefreshTokenFactory {
                 Date.from(now),
                 Date.from(expiry));
     }
+
+    public RefreshToken recreate(RefreshToken refreshToken) {
+
+        Instant now = Instant.now();
+        Instant expiry = now.plus(refreshTokenTtl);
+
+        return new RefreshToken(
+                UUID.randomUUID(),
+                refreshToken.subject(),
+                Date.from(now),
+                Date.from(expiry));
+    }
 }

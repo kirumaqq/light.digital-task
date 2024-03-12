@@ -17,7 +17,7 @@ public class AccessTokenFactory {
         this.accessTokenTtl = jwtProperties.getAccessTokenTtl();
     }
 
-    public AccessToken createFromRefreshToken(RefreshToken refreshToken) {
+    public AccessToken createByRefreshToken(RefreshToken refreshToken) {
 
         Date expiry = Date.from(Instant.now().plus(accessTokenTtl));
 
